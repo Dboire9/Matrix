@@ -22,6 +22,15 @@ class Vector:
 		"""Return a copy of this vector"""
 		return Vector(self.values.copy())
 
+	def dot(self, v):
+		"""Return the dot product of two vectors"""
+		if len(self.values) != len(v.values):
+			raise ValueError("Vectors must have the same length")
+		result = 0
+		for i in range(len(self.values)):
+			self[i] *= v[i]
+			result += self[i]
+		return result
 
 	def scl(self, K):
 		"""Scale this vector by a scalar value"""
@@ -51,14 +60,11 @@ class Matrix:
 		return self.rows[index]
 	
 	def __setitem__(self, index, value):
-		"""Allow setting rows using m[i] = value"""
+		"""Allow setting rows using m[io turn in] = value"""
 		if len(value) != self.num_cols:
 			raise ValueError("Assigned row must match matrix column count")
 		self.rows[index] = list(value)
 	
-	def shape(self):
-		return f"Matrix {self.num_rows}x{self.num_cols}"
-
 	def add(self, v):
 		"""Add another matrix to this matrix"""
 		if self.num_rows != v.num_rows:
@@ -71,6 +77,16 @@ class Matrix:
 		"""Return a copy of this vector"""
 		return Matrix([row.copy() for row in self.rows])
 
+	def scl(self, K):
+		"""Scale this matrix by a scalar value"""
+		for i in range(self.num_rows):
+			for j in range(self.num_cols):
+				self.rows[i][j] *= K
+
+	def shape(self):
+		"""Return the shape of the matrix in arguments"""
+		return f"Matrix {self.num_rows}x{self.num_cols}"
+
 	def sub(self, v):
 		"""Substract another matrix to this matrix"""
 		if self.num_rows != v.num_rows:
@@ -78,10 +94,4 @@ class Matrix:
 		for i in range(self.num_rows):
 			for j in range(self.num_cols):
 				self.rows[i][j] -= v.rows[i][j]
-
-	def scl(self, K):
-		"""Scale this matrix by a scalar value"""
-		for i in range(self.num_rows):
-			for j in range(self.num_cols):
-				self.rows[i][j] *= K
 	
