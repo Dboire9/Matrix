@@ -64,7 +64,7 @@ class Vector:
 			raise ValueError("Vectors must have the same length")
 		for i in range(len(self.values)):
 			self[i] -= v[i]
-			
+
 
 
 
@@ -100,6 +100,27 @@ class Matrix:
 	def copy(self):
 		"""Return a copy of this vector"""
 		return Matrix([row.copy() for row in self.rows])
+
+	def mul_vec(self, vec: Vector) -> Vector:
+		"""Multiply the matrix by a vector"""
+		if self.num_cols != len(vec.values):
+			raise ValueError("Length of the vector and the columns in the matrix must be equal")
+		result = Vector([0.] * len(vec.values))
+		for i in range(self.num_rows):
+			for j in range(self.num_cols):
+				result[i] += self.rows[i][j] * vec.values[j]
+		return result
+
+	def mul_mat(self, mat):
+		"""Multiply the two matrices"""
+		if self.num_cols != mat.num_rows:
+			raise ValueError("Length of the column matrix and the rows in the other must be equal")
+		result = Matrix([[0.] * mat.num_cols for _ in range(self.num_rows)])
+		for i in range(self.num_rows):
+			for j in range(self.num_cols):
+				for k in range(mat.num_rows):
+					result.rows[i][j] += self.rows[i][k] * mat.rows[k][j]
+		return result
 
 	def scl(self, K):
 		"""Scale this matrix by a scalar value"""
