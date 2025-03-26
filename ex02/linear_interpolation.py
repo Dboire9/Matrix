@@ -5,7 +5,7 @@ def lerp(u, v, t: float):
 		return u
 	elif(t == 1):
 		return v
-	if not isinstance(u, Vector) and not isinstance(v, Vector):
+	if isinstance(u, float) and isinstance(v, float):
 		return u + t * (v - u)
 	else:
 		v.sub(u)

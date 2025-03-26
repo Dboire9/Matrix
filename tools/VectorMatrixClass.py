@@ -67,6 +67,10 @@ class Matrix:
 			for j in range(self.num_cols):
 				self.rows[i][j] += v.rows[i][j]
 
+	def copy(self):
+		"""Return a copy of this vector"""
+		return Matrix([row.copy() for row in self.rows])
+
 	def sub(self, v):
 		"""Substract another matrix to this matrix"""
 		if self.num_rows != v.num_rows:
