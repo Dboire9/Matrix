@@ -11,8 +11,5 @@ def main():
 	print(f"{u.norm_1()}, {u.norm()}, {u.norm_inf()}")
 
 
-
-
-
 if __name__ == "__main__":
 	main()
