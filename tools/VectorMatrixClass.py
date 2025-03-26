@@ -32,6 +32,27 @@ class Vector:
 			result += self[i]
 		return result
 
+	def norm_1(self) -> float:
+		result = 0
+		for i in range(len(self.values)):
+			if(self.values[i] < 0):
+				self.values[i] *= -1
+			result += self.values[i]
+		return result
+
+	def norm(self) -> float:
+		result = 0
+		for i in range(len(self.values)):
+			result += self.values[i]**2
+		return result**0.5
+	
+	def norm_inf(self):
+		for i in range(len(self.values)):
+			if(self.values[i] < 0):
+				self.values[i] *= -1
+			self.values[i] = self.values[i]
+		return max(self.values)
+
 	def scl(self, K):
 		"""Scale this vector by a scalar value"""
 		for i in range(len(self.values)):
@@ -44,6 +65,9 @@ class Vector:
 		for i in range(len(self.values)):
 			self[i] -= v[i]
 			
+
+
+
 class Matrix:
 	def __init__(self, rows):
 		self.rows = [list(row) for row in rows]
