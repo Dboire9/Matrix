@@ -122,6 +122,21 @@ class Matrix:
 					result.rows[i][j] += self.rows[i][k] * mat.rows[k][j]
 		return result
 
+	def row_echelon(self):
+		result = self.copy()
+		# Find the pivot and rearrange the rows
+		for i in range(self.num_cols):
+			for j in range(self.num_rows):
+				if self.rows[j][i] != 0: break
+			if self.rows[j][i]: break
+		print(f"Pivot found at column i: {i}, row j: {j}: {self.rows[j][i]}")
+		if j != 0:
+			for i in range(self.num_cols):
+				result.rows[0][i] = self.rows[j][i]
+				result.rows[j][i] = self.rows[0][i]
+		# Begin the pivot operation
+		return result
+
 	def scl(self, K):
 		"""Scale this matrix by a scalar value"""
 		for i in range(self.num_rows):
