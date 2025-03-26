@@ -141,9 +141,18 @@ class Matrix:
 				self.rows[i][j] -= v.rows[i][j]
 
 	def trace(self) -> float:
+		"""Compute the trace of the matrix"""
 		if self.num_cols != self.num_rows:
 			raise ValueError("The matrix must be a square to do a trace")
 		result = 0
 		for i in range(self.num_cols):
 			result += self.rows[i][i]
+		return result
+
+	def transpose(self):
+		"""Return the transpose of the matrix"""
+		result = Matrix([[0.] * self.num_rows for _ in range(self.num_cols)])
+		for i in range(self.num_rows):
+			for j in range(self.num_cols):
+				result.rows[j][i] = self.rows[i][j]
 		return result
