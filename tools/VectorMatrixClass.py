@@ -139,4 +139,11 @@ class Matrix:
 		for i in range(self.num_rows):
 			for j in range(self.num_cols):
 				self.rows[i][j] -= v.rows[i][j]
-	
+
+	def trace(self) -> float:
+		if self.num_cols != self.num_rows:
+			raise ValueError("The matrix must be a square to do a trace")
+		result = 0
+		for i in range(self.num_cols):
+			result += self.rows[i][i]
+		return result
