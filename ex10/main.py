@@ -7,10 +7,11 @@ def main():
 	[8., 5., 1., 4., 17.],
 	])
 	print(u.row_echelon())
-
+	print()
 	u = Matrix([
-	[1., 2.],
-	[2., 4.],
+	[0., 0., 0.],
+	[0., 1., 0.],
+	[0., 0., 0.],
 	])
 	print(u.row_echelon())
 

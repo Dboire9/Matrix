@@ -129,21 +129,17 @@ class Matrix:
 			for j in range(self.num_rows):
 				if self.rows[j][i] != 0: break
 			if self.rows[j][i]: break
-		print(f"Pivot found at column i: {i}, row j: {j}: {self.rows[j][i]}")
 		if j != 0:
 			for i in range(self.num_cols):
 				result.rows[0][i] = self.rows[j][i]
 				result.rows[j][i] = self.rows[0][i]
-		# print(result)
-		# Row echelon
+		# Row echelons
 		for k in range(self.num_rows):
 			j = 0
 			result = result.norm_row_echelon(k)
 			for j in range(result.num_rows):
 				if j != k:
-					print(result)
 					pivot = result.search_pivot(k)
-					print("pivot:", pivot)
 					result = result.sub_row_echelon(j, k, pivot)
 		return result
 
@@ -157,14 +153,12 @@ class Matrix:
 		for i in range(result.num_cols):
 			if result.rows[j][pivot] != 0:
 				sub = result.rows[j][pivot]
-				print("sub", sub)
 				for i in range(result.num_cols):
 					result.rows[j][i] -= sub * result.rows[k][i]
 			return result
 		return result
 
 	def norm_row_echelon(result, k):
-		print("Norm:", k)
 		for j in range(k, result.num_rows):
 			for i in range(result.num_cols):
 				if result.rows[j][i] != 0:
@@ -174,7 +168,6 @@ class Matrix:
 						result.rows[j][i] *= divider
 					return result
 		return result
-	
 
 	def scl(self, K):
 		"""Scale this matrix by a scalar value"""
