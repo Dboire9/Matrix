@@ -88,7 +88,7 @@ class Matrix:
 		if len(value) != self.num_cols:
 			raise ValueError("Assigned row must match matrix column count")
 		self.rows[index] = list(value)
-	
+
 	def add(self, v):
 		"""Add another matrix to this matrix"""
 		if self.num_rows != v.num_rows:
@@ -100,6 +100,17 @@ class Matrix:
 	def copy(self):
 		"""Return a copy of this vector"""
 		return Matrix([row.copy() for row in self.rows])
+
+	def determinant(self):
+		"""Return the determinant of a given matrix"""
+		total = 1
+		self, swaps = self.row_reduction()
+		print(self)
+		for j in range(self.num_cols):
+			total *= self.rows[j][j]
+		if swaps != 0:
+			total *= swaps * -1
+		return total
 
 	def mul_vec(self, vec: Vector) -> Vector:
 		"""Multiply the matrix by a vector"""
@@ -122,7 +133,8 @@ class Matrix:
 					result.rows[i][j] += self.rows[i][k] * mat.rows[k][j]
 		return result
 
-	def row_echelon(self):
+	def reduced_row_echelon(self):
+		"""Return the reduced row echelon of a given matrix"""
 		result = self.copy()
 		# Find the pivot and rearrange the rows
 		for i in range(self.num_cols):
@@ -143,19 +155,21 @@ class Matrix:
 					result = result.sub_row_echelon(j, k, pivot)
 		return result
 
+# Utils for reduced row echelon
+
 	def search_pivot(result, k):
-		for i in range(result.num_cols):
-			if result.rows[k][i] == 1:
+		for i in range(k, result.num_cols):
+			print(f"k = 1 : {result.rows[i][k]}")
+			if result.rows[i][k] != 0:
 				return i
 		return 0
 
 	def sub_row_echelon(result, j, k, pivot):
-		for i in range(result.num_cols):
-			if result.rows[j][pivot] != 0:
-				sub = result.rows[j][pivot]
-				for i in range(result.num_cols):
-					result.rows[j][i] -= sub * result.rows[k][i]
-			return result
+		if result.rows[j][pivot] != 0:
+			factor = result.rows[j][pivot] / result.rows[k][pivot]
+			for i in range(result.num_cols):
+				# print(f"{result.rows[j][i]} -= {factor} * {result.rows[k][i]}")
+				result.rows[j][i] -= factor * result.rows[k][i]
 		return result
 
 	def norm_row_echelon(result, k):
@@ -168,6 +182,31 @@ class Matrix:
 						result.rows[j][i] *= divider
 					return result
 		return result
+
+
+	def row_reduction(self):
+		result = self.copy()  
+		num_rows, num_cols = result.num_rows, result.num_cols
+		swaps = 0
+		
+		for k in range(num_rows):
+			# Find the pivot in the current column
+			pivot_row = result.search_pivot(k)
+			# If pivot not found at [k][k] swaps the pivot row with the k row
+			if pivot_row != k:
+				temp = result.copy()
+				for i in range(self.num_cols):
+					result.rows[k][i] = temp.rows[pivot_row][i]
+					result.rows[pivot_row][i] = temp.rows[k][i]
+				swaps += 1
+
+			if result.rows[pivot_row][k] == 0:
+				continue
+
+			# Eliminate entries below the pivot
+			for j in range(k + 1, num_rows):
+				result = result.sub_row_echelon(j, k, pivot_row)
+		return result, swaps
 
 	def scl(self, K):
 		"""Scale this matrix by a scalar value"""

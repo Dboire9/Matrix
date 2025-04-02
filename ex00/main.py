@@ -1,4 +1,4 @@
-from VectorMatrixClass import Vector, Matrix
+from .VectorMatrixClass import Vector, Matrix
 
 def main():
 	u = Vector([2., 3.])
@@ -51,7 +51,7 @@ def main():
 	[1., 2.],
 	[3., 4.]
 	])
-
+	print("scl")
 	u.scl(2.)
 	print(u)
 
