@@ -164,6 +164,15 @@ class Matrix:
 					result.rows[i][j] += self.rows[i][k] * mat.rows[k][j]
 		return result
 
+	def rank(self):
+		rank = self.num_rows
+		result = self.copy()
+		result = result.reduced_row_echelon()
+		for j in range(result.num_rows):
+			if all(element == 0 for element in result.rows[j]):
+				rank -= 1
+		return rank
+
 	def reduced_row_echelon(self):
 		"""Return the reduced row echelon of a given matrix"""
 		result = self.copy()
@@ -196,7 +205,7 @@ class Matrix:
 		return 0
 
 	def sub_row_echelon(result, j, k, pivot):
-		if result.rows[j][pivot] != 0:
+		if result.rows[k][pivot] != 0:
 			factor = result.rows[j][pivot] / result.rows[k][pivot]
 			for i in range(result.num_cols):
 				result.rows[j][i] -= factor * result.rows[k][i]
