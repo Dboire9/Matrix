@@ -1,4 +1,4 @@
-from tools.VectorMatrixClass import Vector
+from tools.ComplexVectorMatrixClass import Vector
 
 def angle_cos(u: Vector, v: Vector) -> float:
 	"""Return the cosine of two vectors"""
@@ -10,4 +10,10 @@ def angle_cos(u: Vector, v: Vector) -> float:
 	u_norm = u.copy().norm()
 	v_norm = v.copy().norm()
 	u_dot = u.dot(v)
-	return round(u_dot / (u_norm * v_norm), 9)
+	result = 0
+	a = u_dot.real
+	b = u_dot.imag
+	result = a**2 + b**2
+	result = result ** 0.5
+	
+	return result / (u_norm * v_norm)

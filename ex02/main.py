@@ -12,9 +12,8 @@ def main():
 	m2 = Matrix([[20., 10.], [30., 40.]])
 
 	print(lerp(v1.copy(), v2.copy(), 0.3))
-	print(v1, '\n', v2)
-
+	print()
 	print(lerp(m1.copy(), m2.copy(), 0.5))
-	
+
 if __name__ == "__main__":
 	main()
