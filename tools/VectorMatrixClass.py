@@ -103,14 +103,45 @@ class Matrix:
 
 	def determinant(self):
 		"""Return the determinant of a given matrix"""
+		if self.num_cols != self.num_rows:
+			raise ValueError("Determinant can only be calculated for a square matrix")
 		total = 1
 		self, swaps = self.row_reduction()
-		print(self)
 		for j in range(self.num_cols):
 			total *= self.rows[j][j]
 		if swaps != 0:
 			total *= swaps * -1
 		return total
+	
+	def inverse(self):
+		"""Return the inverse of a given square matrix"""
+		if self.num_cols != self.num_rows:
+			raise ValueError("Inverse of a matrix must be done for a square matrix")
+		result = self.copy()
+		if self.determinant() != 0:
+			result = result.augmented_matrix()
+			result = result.reduced_row_echelon()
+			result = result.get_inverse()
+			return result
+
+#Utils for the inverse
+	def augmented_matrix(self):
+		new = Matrix([[0.] * (self.num_cols * 2) for _ in range(self.num_rows)])
+		for j in range(self.num_rows):
+			for i in range(self.num_cols):
+				new.rows[j][i] = self.rows[j][i]
+		for k in range(self.num_cols, new.num_cols):
+			new.rows[k % self.num_rows][k] = 1.0
+		return new
+
+	def get_inverse(self):
+		result = self.copy()
+		new = Matrix([[0.] * (self.num_rows) for _ in range(self.num_rows)])
+		for j in range(new.num_rows):
+			for i in range(new.num_cols):
+				new.rows[j][i] = result.rows[j][i + self.num_rows]
+		return new
+
 
 	def mul_vec(self, vec: Vector) -> Vector:
 		"""Multiply the matrix by a vector"""
@@ -159,7 +190,7 @@ class Matrix:
 
 	def search_pivot(result, k):
 		for i in range(k, result.num_cols):
-			print(f"k = 1 : {result.rows[i][k]}")
+			# print(f"k = 1 : {result.rows[i][k]}")
 			if result.rows[i][k] != 0:
 				return i
 		return 0
@@ -168,7 +199,6 @@ class Matrix:
 		if result.rows[j][pivot] != 0:
 			factor = result.rows[j][pivot] / result.rows[k][pivot]
 			for i in range(result.num_cols):
-				# print(f"{result.rows[j][i]} -= {factor} * {result.rows[k][i]}")
 				result.rows[j][i] -= factor * result.rows[k][i]
 		return result
 
@@ -183,10 +213,9 @@ class Matrix:
 					return result
 		return result
 
-
 	def row_reduction(self):
 		result = self.copy()  
-		num_rows, num_cols = result.num_rows, result.num_cols
+		num_rows = result.num_rows
 		swaps = 0
 		
 		for k in range(num_rows):
