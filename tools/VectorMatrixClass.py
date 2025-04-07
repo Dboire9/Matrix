@@ -1,3 +1,5 @@
+from math import tan, pi
+
 class Vector:
 	def __init__(self, values):
 		self.values = list(values)
@@ -142,7 +144,6 @@ class Matrix:
 				new.rows[j][i] = result.rows[j][i + self.num_rows]
 		return new
 
-
 	def mul_vec(self, vec: Vector) -> Vector:
 		"""Multiply the matrix by a vector"""
 		if self.num_cols != len(vec.values):
@@ -163,6 +164,55 @@ class Matrix:
 				for k in range(mat.num_rows):
 					result.rows[i][j] += self.rows[i][k] * mat.rows[k][j]
 		return result
+
+	def projection(self, fov, ratio, near, far):
+		result = self.copy()
+		fov = fov * (pi / 180)
+		# Scales the x-coordinate based on the fov
+		result.rows[0][0] = 1 / (ratio * tan(fov/2))
+		# Scales the y-coordinate based on the fov
+		result.rows[1][1] = 1 / (tan(fov/2))
+		# Maps z-coordinates (depth) into a normalized range
+		result.rows[2][2] = -1 * ((far + near) / (far - near))
+		result.rows[2][3] = -1 * ((2 * far * near) / (far - near))
+		# Sets the output w-coordinate to −z
+		result.rows[3][2] = -1
+		id_matrix = Matrix([[1.0 if i == j else 0.0 for j in range(result.num_cols)] for i in range(result.num_rows)])
+		
+		# Creating a homogeonous vector from the ones we have in the .obj (e.g line 10)
+		v = Vector([-0.000578, -0.064495, 0.100000, 1.0])
+		# Matrix Vector multiplication
+		dot_result = [0.0] * 4
+		for j in range(result.num_rows):
+			dot_prod = Vector([0.0, 0.0, 0.0, 0.0])
+			for i in range(result.num_cols):
+				dot_prod.values[i] = result.rows[j][i]
+			dot_result[j] = dot_prod.copy().dot(v)
+		# Checking if x2d and y2d are between -1 and 1, and if not changing the z
+		while (dot_result[0] / dot_result[3] > 1) or (dot_result[1] / dot_result[3] > 1):
+			v[2] -= 1
+			id_matrix.rows[2][3] -= 1
+			for j in range(0, result.num_rows):
+				dot_prod = Vector([0.0, 0.0, 0.0, 0.0])
+				for i in range(0, result.num_cols):
+					dot_prod.values[i] = result.rows[j][i]
+				dot_result[j] = dot_prod.dot(v)
+		while (dot_result[0] / dot_result[3] < -1) or (dot_result[1] / dot_result[3] < -1):
+			v[2] += 1
+			id_matrix.rows[2][3] += 1
+			for j in range(0, result.num_rows):
+				dot_prod = Vector([0.0, 0.0, 0.0, 0.0])
+				for i in range(0, result.num_cols):
+					dot_prod.values[i] = result.rows[j][i]
+				dot_result[j] = dot_prod.dot(v)
+		# print(dot_result[0] / dot_result[3], dot_result[1] / dot_result[3])
+		result = result.mul_mat(id_matrix)
+		print (result)
+		return result
+
+
+
+
 
 	def rank(self):
 		rank = self.num_rows
