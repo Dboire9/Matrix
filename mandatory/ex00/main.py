@@ -1,4 +1,4 @@
-from .VectorMatrixClass import Vector, Matrix
+from VectorMatrixClass import Vector, Matrix
 
 def main():
 	u = Vector([2., 3.])

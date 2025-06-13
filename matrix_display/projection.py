@@ -6,7 +6,7 @@ def main():
 	])
 	u = u.projection(120, 1, 1, 1000)
 	print(u)
-	with open('/home/dboire/Documents/Matrix/matrix_display/proj', 'w') as file:
+	with open('./proj', 'w') as file:
 		for row in u:
 			formatted_row = ', '.join(f'{value:.3f}' for value in row)  # Format each value to 3 decimal places
 			file.write(formatted_row + '\n')  # Write the row to the file with a newline

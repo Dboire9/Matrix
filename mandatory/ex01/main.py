@@ -1,4 +1,4 @@
-from .linear_combination import linear_combination
+from linear_combination import linear_combination
 from tools.VectorMatrixClass import *
 
 def main():

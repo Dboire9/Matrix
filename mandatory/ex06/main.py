@@ -1,5 +1,5 @@
 from tools.VectorMatrixClass import *
-from ex06.cross_products import cross_product
+from cross_products import cross_product
 
 def main():
 	u = Vector([0., 0., 1.])

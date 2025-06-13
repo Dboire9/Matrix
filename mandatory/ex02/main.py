@@ -1,4 +1,4 @@
-from .linear_interpolation import lerp
+from linear_interpolation import lerp
 from tools.VectorMatrixClass import *
 
 def main():

@@ -6,45 +6,36 @@ def main():
 	[0., 0.],
 	[0., 0.]
 	])
-
-	print(u.transpose())
+	print(u.reduced_row_echelon())
 	print()
 	
 	u = Matrix([
 	[1., 0.],
 	[0., 1.]
 	])
-
-	print(u.transpose())
+	print(u.reduced_row_echelon())
+	print()
+	
+	u = Matrix([
+	[4., 2.],
+	[2., 1.]
+	])
+	print(u.reduced_row_echelon())
+	print()
+	
+	u = Matrix([
+	[-7., 2.],
+	[4., 8.]
+	])
+	print(u.reduced_row_echelon())
 	print()
 	
 	u = Matrix([
 	[1., 2.],
-	[3., 4.]
+	[4., 8.]
 	])
-
-	print(u.transpose())
+	print(u.reduced_row_echelon())
 	print()
-
-	u = Matrix([
-	[1., 0., 0.],
-	[0., 1., 0.],
-	[0., 0., 1.]
-	])
-
-	print(u.transpose())
-	print()
-	
-	u = Matrix([
-	[1., 2.],
-	[3., 4.],
-	[5., 6.]
-	])
-
-	print(u.transpose())
-	print()
-
-
 
 
 

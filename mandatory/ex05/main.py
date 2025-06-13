@@ -1,5 +1,5 @@
 from tools.VectorMatrixClass import *
-from tools.complex_angle_cos import angle_cos
+from tools.angle_cos import angle_cos
 
 def main():
 	u = Vector([1., 0.])
